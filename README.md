@@ -1,20 +1,17 @@
-# satori.github.io
-Openings
-
 # ♔ Chess Openings Interactive Study Guide ♛
 
 > **Visual move-by-move analysis of classical chess openings from both White and Black perspectives**
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Site-brightgreen?style=for-the-badge)](https://satori.github.io/)
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Site-brightgreen?style=for-the-badge)](https://bobbycarlsen.github.io/satori/)
 
 ---
 
 ## 🎯 **Start Here**
 
-### 🏠 **[📊 Browse All Openings](https://satori.github.io/index.html)**
+### 🏠 **[📊 Browse All Openings](https://bobbycarlsen.github.io/satori/index.html)**
 *Main interactive collection with all chess openings*
 
-### 🖨️ **[📄 Print Study Guide](https://satori.github.io/print_ready_openings.html)**
+### 🖨️ **[📄 Print Study Guide](https://bobbycarlsen.github.io/satori/print_ready_openings.html)**
 *Professional print-ready reference with side-by-side analysis*
 
 ---
@@ -43,7 +40,7 @@ Openings
 
 ## 🎯 **How to Use**
 
-1. **[Click here to start](https://satori.github.io/index.html)** 
+1. **[Click here to start](https://bobbycarlsen.github.io/satori/index.html)** 
 2. **Choose an opening** from the collection
 3. **Pick your perspective** - ♔ White or ♛ Black view
 4. **Navigate through moves** using buttons or keyboard
@@ -101,6 +98,6 @@ No downloads, no apps - just open and study!
 
 ---
 
-**[🚀 Start Studying Now](https://satori.github.io/index.html)**
+**[🚀 Start Studying Now](https://bobbycarlsen.github.io/satori/index.html)**
 
 *Built for chess enthusiasts who learn through visual exploration* ♔♛
