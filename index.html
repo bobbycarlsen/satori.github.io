@@ -1,0 +1,619 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Chess Openings Collection - Enhanced Edition</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 40px;
+            text-align: center;
+        }
+        
+        .header h1 {
+            font-size: 3em;
+            margin-bottom: 15px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header p {
+            font-size: 1.3em;
+            opacity: 0.9;
+        }
+        
+        .stats-bar {
+            background: rgba(255, 255, 255, 0.1);
+            padding: 15px;
+            margin-top: 20px;
+            border-radius: 10px;
+            display: flex;
+            justify-content: center;
+            gap: 30px;
+            flex-wrap: wrap;
+        }
+        
+        .stat-item {
+            text-align: center;
+        }
+        
+        .stat-number {
+            font-size: 1.8em;
+            font-weight: bold;
+            display: block;
+        }
+        
+        .stat-label {
+            font-size: 0.9em;
+            opacity: 0.8;
+        }
+        
+        .openings-grid {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
+            gap: 30px;
+            padding: 40px;
+        }
+        
+        .opening-card {
+            background: white;
+            border-radius: 15px;
+            padding: 25px;
+            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
+            transition: all 0.3s ease;
+            border-left: 5px solid #3498db;
+            position: relative;
+            overflow: hidden;
+        }
+        
+        .opening-card::before {
+            content: '';
+            position: absolute;
+            top: 0;
+            left: 0;
+            right: 0;
+            height: 3px;
+            background: linear-gradient(90deg, #3498db, #2ecc71);
+        }
+        
+        .opening-card:hover {
+            transform: translateY(-5px);
+            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+        }
+        
+        .opening-title {
+            font-size: 1.4em;
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 15px;
+            border-bottom: 2px solid #ecf0f1;
+            padding-bottom: 10px;
+        }
+        
+        .opening-info {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 15px;
+            font-size: 0.9em;
+            color: #666;
+        }
+        
+        .move-count {
+            background: #e74c3c;
+            color: white;
+            padding: 4px 8px;
+            border-radius: 12px;
+            font-weight: bold;
+        }
+        
+        .perspective-links {
+            display: flex;
+            gap: 15px;
+            margin-top: 15px;
+        }
+        
+        .perspective-link {
+            flex: 1;
+            background: #3498db;
+            color: white;
+            text-decoration: none;
+            padding: 12px 20px;
+            border-radius: 8px;
+            text-align: center;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 8px;
+        }
+        
+        .perspective-link:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+        }
+        
+        .perspective-link.white {
+            background: #e74c3c;
+        }
+        
+        .perspective-link.white:hover {
+            background: #c0392b;
+        }
+        
+        .footer {
+            background: #34495e;
+            color: white;
+            padding: 25px;
+            text-align: center;
+        }
+        
+        .quick-actions {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            text-align: center;
+        }
+        
+        .action-btn {
+            background: #95a5a6;
+            color: white;
+            text-decoration: none;
+            padding: 10px 20px;
+            border-radius: 20px;
+            margin: 0 10px;
+            font-weight: 500;
+            transition: all 0.3s ease;
+        }
+        
+        .action-btn:hover {
+            background: #7f8c8d;
+            transform: translateY(-2px);
+        }
+        
+        .action-btn.print {
+            background: #f39c12;
+        }
+        
+        .action-btn.print:hover {
+            background: #e67e22;
+        }
+        
+        @media (max-width: 768px) {
+            .openings-grid {
+                grid-template-columns: 1fr;
+                padding: 20px;
+            }
+            
+            .header h1 {
+                font-size: 2.5em;
+            }
+            
+            .stats-bar {
+                flex-direction: column;
+                gap: 15px;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="header">
+            <h1>♔ Chess Openings Collection ♛</h1>
+            <p>Interactive Analysis of Classical Chess Openings with Enhanced Features</p>
+            <div class="stats-bar">
+                <div class="stat-item">
+                    <span class="stat-number">23</span>
+                    <span class="stat-label">Openings</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">1707</span>
+                    <span class="stat-label">Total Moves</span>
+                </div>
+                <div class="stat-item">
+                    <span class="stat-number">46</span>
+                    <span class="stat-label">Perspectives</span>
+                </div>
+            </div>
+        </div>
+        
+        <div class="quick-actions">
+            <a href="print_ready_openings.html" class="action-btn print">🖨️ Print-Ready Reference</a>
+            <a href="#" class="action-btn" onclick="showRandomOpening()">🎲 Random Opening</a>
+        </div>
+        
+        <div class="openings-grid">
+
+            <div class="opening-card">
+                <div class="opening-title">Ruy Lopez - Closed, Breyer Defense, Zaitsev Hybrid</div>
+                <div class="opening-info">
+                    <span>♔ 20 | ♛ 20 moves</span>
+                    <span class="move-count">40 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="ruy_lopez_breyer/white/ruy_lopez_breyer.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="ruy_lopez_breyer/black/ruy_lopez_breyer.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Italian Game - Giuoco Piano, Scotch Gambit, Walbrodt-Baird Gambit</div>
+                <div class="opening-info">
+                    <span>♔ 20 | ♛ 20 moves</span>
+                    <span class="move-count">40 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="italian_giuoco_piano_scotch/white/italian_giuoco_piano_scotch.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="italian_giuoco_piano_scotch/black/italian_giuoco_piano_scotch.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Sicilian Defense: Najdorf Variation, Main Line</div>
+                <div class="opening-info">
+                    <span>♔ 22 | ♛ 22 moves</span>
+                    <span class="move-count">44 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="sicilian_defense_najdorf/white/sicilian_defense_najdorf.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="sicilian_defense_najdorf/black/sicilian_defense_najdorf.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Queen's Gambit Declined: Tartakower Defense, Exchange Variation</div>
+                <div class="opening-info">
+                    <span>♔ 24 | ♛ 23 moves</span>
+                    <span class="move-count">47 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="qgd_tartakower_defense/white/qgd_tartakower_defense.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="qgd_tartakower_defense/black/qgd_tartakower_defense.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">French Defence - Tarrasch, Closed Variation</div>
+                <div class="opening-info">
+                    <span>♔ 24 | ♛ 24 moves</span>
+                    <span class="move-count">48 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="french_defense_tarrasch/white/french_defense_tarrasch.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="french_defense_tarrasch/black/french_defense_tarrasch.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">King's Indian Defense: Orthodox Variation, Classical System</div>
+                <div class="opening-info">
+                    <span>♔ 24 | ♛ 24 moves</span>
+                    <span class="move-count">48 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="kings_indian_orthodox_classical/white/kings_indian_orthodox_classical.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="kings_indian_orthodox_classical/black/kings_indian_orthodox_classical.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">English Opening: King's English Variation, Two Knights Variation, Reversed Dragon</div>
+                <div class="opening-info">
+                    <span>♔ 23 | ♛ 23 moves</span>
+                    <span class="move-count">46 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="english_reversed_dragon/white/english_reversed_dragon.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="english_reversed_dragon/black/english_reversed_dragon.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Caro-Kann Defense: Karpov Variation</div>
+                <div class="opening-info">
+                    <span>♔ 23 | ♛ 23 moves</span>
+                    <span class="move-count">46 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="caro_kann_karpov/white/caro_kann_karpov.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="caro_kann_karpov/black/caro_kann_karpov.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Scotch Game: Schmidt Variation</div>
+                <div class="opening-info">
+                    <span>♔ 25 | ♛ 25 moves</span>
+                    <span class="move-count">50 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="scotch_game_schmidt/white/scotch_game_schmidt.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="scotch_game_schmidt/black/scotch_game_schmidt.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Nimzo-Indian Defense: Classical Variation</div>
+                <div class="opening-info">
+                    <span>♔ 25 | ♛ 25 moves</span>
+                    <span class="move-count">50 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="nid_classical/white/nid_classical.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="nid_classical/black/nid_classical.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Grünfeld Defense: Exchange Variation, Modern Exchange Variation, Kramnik's Line</div>
+                <div class="opening-info">
+                    <span>♔ 49 | ♛ 48 moves</span>
+                    <span class="move-count">97 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="grunfeld_exchange/white/grunfeld_exchange.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="grunfeld_exchange/black/grunfeld_exchange.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">King's Indian Attack</div>
+                <div class="opening-info">
+                    <span>♔ 49 | ♛ 48 moves</span>
+                    <span class="move-count">97 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="kia/white/kia.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="kia/black/kia.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Catalan Opening: Closed</div>
+                <div class="opening-info">
+                    <span>♔ 58 | ♛ 57 moves</span>
+                    <span class="move-count">115 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="catalan_closed/white/catalan_closed.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="catalan_closed/black/catalan_closed.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Scandinavian Defense: Richter Variation</div>
+                <div class="opening-info">
+                    <span>♔ 35 | ♛ 35 moves</span>
+                    <span class="move-count">70 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="scandinavian_defense_richter/white/scandinavian_defense_richter.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="scandinavian_defense_richter/black/scandinavian_defense_richter.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Dutch Defense: Normal Variation</div>
+                <div class="opening-info">
+                    <span>♔ 63 | ♛ 62 moves</span>
+                    <span class="move-count">125 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="dutch_defense_normal/white/dutch_defense_normal.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="dutch_defense_normal/black/dutch_defense_normal.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Vienna Game: Vienna Gambit, Main Line</div>
+                <div class="opening-info">
+                    <span>♔ 90 | ♛ 89 moves</span>
+                    <span class="move-count">179 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="vienna_gambit_main/white/vienna_gambit_main.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="vienna_gambit_main/black/vienna_gambit_main.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">King's Indian Defense: Orthodox Variation, Classical System, Traditional Line, Aronin-Taimanov Defense</div>
+                <div class="opening-info">
+                    <span>♔ 64 | ♛ 63 moves</span>
+                    <span class="move-count">127 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="kid_aronin/white/kid_aronin.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="kid_aronin/black/kid_aronin.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Benko Gambit: Zaitsev Variation, Nescafe Frappe Attack</div>
+                <div class="opening-info">
+                    <span>♔ 45 | ♛ 45 moves</span>
+                    <span class="move-count">90 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="benko_gambit_nescafe/white/benko_gambit_nescafe.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="benko_gambit_nescafe/black/benko_gambit_nescafe.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Caro-Kann Defense: Advance Variation, Tal Variation</div>
+                <div class="opening-info">
+                    <span>♔ 60 | ♛ 59 moves</span>
+                    <span class="move-count">119 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="caro_kann_tal/white/caro_kann_tal.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="caro_kann_tal/black/caro_kann_tal.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">English Opening: Carls-Bremen System</div>
+                <div class="opening-info">
+                    <span>♔ 55 | ♛ 55 moves</span>
+                    <span class="move-count">110 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="english_carlsbremen/white/english_carlsbremen.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="english_carlsbremen/black/english_carlsbremen.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Ruy Lopez: Berlin Defense, l'Hermet Variation, Berlin Wall Defense</div>
+                <div class="opening-info">
+                    <span>♔ 8 | ♛ 8 moves</span>
+                    <span class="move-count">16 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="ruylopez_berlin_hermet/white/ruylopez_berlin_hermet.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="ruylopez_berlin_hermet/black/ruylopez_berlin_hermet.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Ruy Lopez: Berlin Defense</div>
+                <div class="opening-info">
+                    <span>♔ 20 | ♛ 19 moves</span>
+                    <span class="move-count">39 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="ruylopez_berlin/white/ruylopez_berlin.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="ruylopez_berlin/black/ruylopez_berlin.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+            <div class="opening-card">
+                <div class="opening-title">Alekhine Defense: Modern Variation, Keres Variation</div>
+                <div class="opening-info">
+                    <span>♔ 32 | ♛ 32 moves</span>
+                    <span class="move-count">64 total</span>
+                </div>
+                <div class="perspective-links">
+                    <a href="alekhine_defense_keres/white/alekhine_defense_keres.html" class="perspective-link">
+                        ♔ White Perspective
+                    </a>
+                    <a href="alekhine_defense_keres/black/alekhine_defense_keres.html" class="perspective-link white">
+                        ♛ Black Perspective
+                    </a>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Generated by Enhanced Chess Opening Analyzer • Feature-Rich Interactive Study Tool</p>
+        </div>
+    </div>
+    
+    <script>
+        function showRandomOpening() {
+            const cards = document.querySelectorAll('.opening-card');
+            const randomCard = cards[Math.floor(Math.random() * cards.length)];
+            randomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
+            randomCard.style.transform = 'scale(1.05)';
+            randomCard.style.boxShadow = '0 20px 40px rgba(52, 152, 219, 0.3)';
+            setTimeout(() => {
+                randomCard.style.transform = '';
+                randomCard.style.boxShadow = '';
+            }, 2000);
+        }
+    </script>
+</body>
+</html>

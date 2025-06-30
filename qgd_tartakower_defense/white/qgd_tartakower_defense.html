@@ -1,0 +1,943 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Queen's Gambit Declined: Tartakower Defense, Exchange Variation - White Perspective</title>
+    <style>
+        
+        * {
+            margin: 0;
+            padding: 0;
+            box-sizing: border-box;
+        }
+        
+        body {
+            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: rgba(255, 255, 255, 0.95);
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
+            overflow: hidden;
+        }
+        
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+            position: relative;
+        }
+        
+        .header h1 {
+            font-size: 2.5em;
+            margin-bottom: 10px;
+            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        }
+        
+        .header p {
+            font-size: 1.2em;
+            opacity: 0.9;
+        }
+        
+        .piece-to-move {
+            position: absolute;
+            top: 20px;
+            left: 20px;
+            background: rgba(255, 255, 255, 0.2);
+            padding: 10px 15px;
+            border-radius: 25px;
+            font-size: 1.1em;
+            font-weight: bold;
+            backdrop-filter: blur(10px);
+        }
+        
+        .controls {
+            background: #f8f9fa;
+            padding: 20px;
+            border-bottom: 1px solid #e9ecef;
+            display: flex;
+            justify-content: center;
+            align-items: center;
+            gap: 15px;
+            flex-wrap: wrap;
+        }
+        
+        .btn {
+            background: #3498db;
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 25px;
+            cursor: pointer;
+            font-size: 16px;
+            transition: all 0.3s ease;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            font-weight: 500;
+        }
+        
+        .btn:hover {
+            background: #2980b9;
+            transform: translateY(-2px);
+            box-shadow: 0 6px 12px rgba(0, 0, 0, 0.15);
+        }
+        
+        .btn:disabled {
+            background: #95a5a6;
+            cursor: not-allowed;
+            transform: none;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .btn.auto-play {
+            background: #e67e22;
+        }
+        
+        .btn.auto-play:hover {
+            background: #d35400;
+        }
+        
+        .btn.auto-play.playing {
+            background: #e74c3c;
+            animation: pulse 1.5s infinite;
+        }
+        
+        @keyframes pulse {
+            0% { transform: scale(1); }
+            50% { transform: scale(1.05); }
+            100% { transform: scale(1); }
+        }
+        
+        .move-counter {
+            background: #e74c3c;
+            color: white;
+            padding: 12px 20px;
+            border-radius: 25px;
+            font-weight: bold;
+            font-size: 16px;
+            display: flex;
+            align-items: center;
+            gap: 10px;
+        }
+        
+        .move-indicator {
+            font-size: 1.2em;
+        }
+        
+        .main-content {
+            display: flex;
+            min-height: 600px;
+        }
+        
+        .board-section {
+            flex: 2;
+            padding: 30px;
+            display: flex;
+            flex-direction: column;
+            align-items: center;
+            justify-content: center;
+            background: #fff;
+        }
+        
+        .board-container {
+            position: relative;
+            margin-bottom: 20px;
+        }
+        
+        .board-image {
+            max-width: 100%;
+            height: auto;
+            border-radius: 10px;
+            box-shadow: 0 10px 30px rgba(0, 0, 0, 0.2);
+            transition: transform 0.3s ease;
+        }
+        
+        .board-image:hover {
+            transform: scale(1.02);
+        }
+        
+        .current-move {
+            background: #27ae60;
+            color: white;
+            padding: 15px 25px;
+            border-radius: 25px;
+            font-size: 18px;
+            font-weight: bold;
+            text-align: center;
+            margin-top: 15px;
+            box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+            display: flex;
+            align-items: center;
+            justify-content: center;
+            gap: 10px;
+        }
+        
+        .move-piece-indicator {
+            font-size: 1.3em;
+            margin-right: 5px;
+        }
+        
+        .moves-panel {
+            flex: 1;
+            background: #f8f9fa;
+            padding: 30px;
+            border-left: 1px solid #e9ecef;
+            display: flex;
+            flex-direction: column;
+            max-height: 100vh;
+        }
+        
+        .panel-header {
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            margin-bottom: 20px;
+            flex-shrink: 0;
+        }
+        
+        .panel-title {
+            color: #2c3e50;
+            font-size: 1.3em;
+            font-weight: bold;
+        }
+        
+        .notation-toggle {
+            background: #95a5a6;
+            color: white;
+            border: none;
+            padding: 8px 16px;
+            border-radius: 15px;
+            cursor: pointer;
+            font-size: 12px;
+            transition: all 0.3s ease;
+        }
+        
+        .notation-toggle:hover {
+            background: #7f8c8d;
+        }
+        
+        .moves-container {
+            flex: 1;
+            overflow-y: auto;
+            margin-bottom: 20px;
+            padding-right: 10px;
+            border-radius: 10px;
+            background: rgba(255, 255, 255, 0.5);
+            border: 2px solid #e9ecef;
+            position: relative;
+        }
+        
+        .moves-container::before {
+            content: '↕ Scrollable';
+            position: absolute;
+            top: 5px;
+            right: 15px;
+            font-size: 10px;
+            color: #95a5a6;
+            background: rgba(255, 255, 255, 0.9);
+            padding: 2px 6px;
+            border-radius: 10px;
+            z-index: 1;
+            opacity: 0.7;
+        }
+        
+        .moves-container::-webkit-scrollbar {
+            width: 8px;
+        }
+        
+        .moves-container::-webkit-scrollbar-track {
+            background: #f1f1f1;
+            border-radius: 4px;
+        }
+        
+        .moves-container::-webkit-scrollbar-thumb {
+            background: #3498db;
+            border-radius: 4px;
+            transition: background 0.3s ease;
+        }
+        
+        .moves-container::-webkit-scrollbar-thumb:hover {
+            background: #2980b9;
+        }
+        
+        .moves-list {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(100px, 1fr));
+            gap: 10px;
+            padding: 15px;
+        }
+        
+        .move-item {
+            background: #fff;
+            border: 2px solid #e9ecef;
+            border-radius: 8px;
+            padding: 12px;
+            text-align: center;
+            cursor: pointer;
+            transition: all 0.3s ease;
+            font-weight: 500;
+            position: relative;
+        }
+        
+        .move-item:hover {
+            border-color: #3498db;
+            background: #f1f8ff;
+            transform: translateY(-2px);
+        }
+        
+        .move-item.active {
+            background: #3498db;
+            color: white;
+            border-color: #2980b9;
+        }
+        
+        .move-number {
+            font-size: 12px;
+            color: #666;
+            display: block;
+            margin-bottom: 5px;
+        }
+        
+        .move-item.active .move-number {
+            color: #e8f4fd;
+        }
+        
+        .move-piece {
+            position: absolute;
+            top: 2px;
+            right: 2px;
+            font-size: 10px;
+            opacity: 0.7;
+        }
+        
+        .evaluation-info {
+            flex-shrink: 0;
+            margin-bottom: 15px;
+            padding: 15px;
+            background: #fff;
+            border-radius: 10px;
+            border-left: 4px solid #3498db;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .evaluation-title {
+            font-weight: bold;
+            color: #2c3e50;
+            margin-bottom: 10px;
+        }
+        
+        .position-stats {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 10px;
+            font-size: 0.9em;
+        }
+        
+        .stat-item {
+            display: flex;
+            justify-content: space-between;
+            padding: 5px 0;
+            border-bottom: 1px solid #eee;
+        }
+        
+        .footer {
+            background: #34495e;
+            color: white;
+            padding: 20px;
+            text-align: center;
+        }
+        
+        .perspective-toggle {
+            position: absolute;
+            top: 20px;
+            right: 20px;
+        }
+        
+        .perspective-link {
+            background: #e67e22;
+            color: white;
+            padding: 10px 20px;
+            border-radius: 20px;
+            text-decoration: none;
+            transition: all 0.3s ease;
+            font-weight: 500;
+        }
+        
+        .perspective-link:hover {
+            background: #d35400;
+            transform: translateY(-2px);
+        }
+        
+        .keyboard-hints {
+            flex-shrink: 0;
+            padding: 15px;
+            background: #ecf0f1;
+            border-radius: 8px;
+            font-size: 0.85em;
+            color: #2c3e50;
+            box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+        }
+        
+        .keyboard-hints h4 {
+            margin-bottom: 8px;
+            font-size: 0.9em;
+        }
+        
+        .hint-grid {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 5px;
+        }
+        
+        .hint-item {
+            display: flex;
+            justify-content: space-between;
+        }
+        
+        .key {
+            background: #34495e;
+            color: white;
+            padding: 2px 6px;
+            border-radius: 3px;
+            font-family: monospace;
+            font-size: 0.8em;
+        }
+        
+        @media (max-width: 768px) {
+            .main-content {
+                flex-direction: column;
+                height: auto;
+            }
+            
+            .moves-panel {
+                border-left: none;
+                border-top: 1px solid #e9ecef;
+                max-height: 50vh;
+                padding: 20px;
+            }
+            
+            .moves-container {
+                max-height: 25vh;
+            }
+            
+            .header h1 {
+                font-size: 2em;
+            }
+            
+            .controls {
+                flex-direction: column;
+                gap: 10px;
+            }
+            
+            .piece-to-move {
+                position: static;
+                margin-bottom: 10px;
+                align-self: center;
+            }
+            
+            .moves-list {
+                grid-template-columns: repeat(auto-fit, minmax(80px, 1fr));
+                gap: 8px;
+            }
+            
+            .evaluation-info,
+            .keyboard-hints {
+                margin-bottom: 10px;
+            }
+        }
+    
+    </style>
+</head>
+<body>
+    <div class="container">
+        <div class="perspective-toggle">
+            <a href="../black/qgd_tartakower_defense.html" class="perspective-link">
+                Switch to Black ♔ Perspective
+            </a>
+        </div>
+        
+        <div class="header">
+            <div class="piece-to-move" id="pieceToMove">
+                ♔ White to Move
+            </div>
+            <h1>Queen's Gambit Declined: Tartakower Defense, Exchange Variation</h1>
+            <p>White Perspective • 47 Moves • ♔ 24 | ♛ 23</p>
+        </div>
+        
+        <div class="controls">
+            <button class="btn" id="firstBtn" onclick="goToMove(0)">⏮ First</button>
+            <button class="btn" id="prevBtn" onclick="previousMove()">⏪ Previous</button>
+            <button class="btn auto-play" id="playBtn" onclick="toggleAutoplay()">▶ Play</button>
+            <button class="btn" id="nextBtn" onclick="nextMove()">Next ⏩</button>
+            <button class="btn" id="lastBtn" onclick="goToMove(46)">Last ⏭</button>
+            <div class="move-counter">
+                <span class="move-indicator" id="moveIndicator">♔</span>
+                <span id="currentMove">1</span> / 47
+            </div>
+        </div>
+        
+        <div class="main-content">
+            <div class="board-section">
+                <div class="board-container">
+                    <img id="boardImage" src="01.png" alt="Chess board position" class="board-image">
+                </div>
+                <div class="current-move" id="currentMoveText">
+                    <span class="move-piece-indicator" id="currentPieceIndicator">♙</span>
+                    d4
+                </div>
+            </div>
+            
+            <div class="moves-panel">
+                <div class="panel-header">
+                    <h3 class="panel-title">Move Sequence</h3>
+                    <div style="display: flex; gap: 10px; align-items: center;">
+                        <span id="moveProgress" style="font-size: 0.9em; color: #666; font-weight: 500;">1 / 47</span>
+                        <button class="notation-toggle" onclick="toggleNotation()">Full Notation</button>
+                    </div>
+                </div>
+                
+                <div class="moves-container">
+                    <div class="moves-list" id="movesList">
+
+                    <div class="move-item active" onclick="goToMove(0)" data-move="0">
+                        <span class="move-number">1.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>d4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(1)" data-move="1">
+                        <span class="move-number">1...</span>
+                        <span class="move-piece">♙</span>
+                        <strong>d5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(2)" data-move="2">
+                        <span class="move-number">2.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>c4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(3)" data-move="3">
+                        <span class="move-number">2...</span>
+                        <span class="move-piece">♙</span>
+                        <strong>e6</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(4)" data-move="4">
+                        <span class="move-number">3.</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Nc3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(5)" data-move="5">
+                        <span class="move-number">3...</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Nf6</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(6)" data-move="6">
+                        <span class="move-number">4.</span>
+                        <span class="move-piece">♗</span>
+                        <strong>Bg5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(7)" data-move="7">
+                        <span class="move-number">4...</span>
+                        <span class="move-piece">♗</span>
+                        <strong>Be7</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(8)" data-move="8">
+                        <span class="move-number">5.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>e3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(9)" data-move="9">
+                        <span class="move-number">5...</span>
+                        <span class="move-piece">♔</span>
+                        <strong>O-O</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(10)" data-move="10">
+                        <span class="move-number">6.</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Nf3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(11)" data-move="11">
+                        <span class="move-number">6...</span>
+                        <span class="move-piece">♙</span>
+                        <strong>h6</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(12)" data-move="12">
+                        <span class="move-number">7.</span>
+                        <span class="move-piece">♗</span>
+                        <strong>Bh4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(13)" data-move="13">
+                        <span class="move-number">7...</span>
+                        <span class="move-piece">♙</span>
+                        <strong>b6</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(14)" data-move="14">
+                        <span class="move-number">8.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>cxd5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(15)" data-move="15">
+                        <span class="move-number">8...</span>
+                        <span class="move-piece">♙</span>
+                        <strong>exd5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(16)" data-move="16">
+                        <span class="move-number">9.</span>
+                        <span class="move-piece">♗</span>
+                        <strong>Bd3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(17)" data-move="17">
+                        <span class="move-number">9...</span>
+                        <span class="move-piece">♗</span>
+                        <strong>Bb7</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(18)" data-move="18">
+                        <span class="move-number">10.</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rc1</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(19)" data-move="19">
+                        <span class="move-number">10...</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Ne4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(20)" data-move="20">
+                        <span class="move-number">11.</span>
+                        <span class="move-piece">♗</span>
+                        <strong>Bxe7</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(21)" data-move="21">
+                        <span class="move-number">11...</span>
+                        <span class="move-piece">♕</span>
+                        <strong>Qxe7</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(22)" data-move="22">
+                        <span class="move-number">12.</span>
+                        <span class="move-piece">♔</span>
+                        <strong>O-O</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(23)" data-move="23">
+                        <span class="move-number">12...</span>
+                        <span class="move-piece">♙</span>
+                        <strong>c5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(24)" data-move="24">
+                        <span class="move-number">13.</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Ne5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(25)" data-move="25">
+                        <span class="move-number">13...</span>
+                        <span class="move-piece">♙</span>
+                        <strong>cxd4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(26)" data-move="26">
+                        <span class="move-number">14.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>exd4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(27)" data-move="27">
+                        <span class="move-number">14...</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Nd7</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(28)" data-move="28">
+                        <span class="move-number">15.</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Nf3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(29)" data-move="29">
+                        <span class="move-number">15...</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rac8</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(30)" data-move="30">
+                        <span class="move-number">16.</span>
+                        <span class="move-piece">♕</span>
+                        <strong>Qb3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(31)" data-move="31">
+                        <span class="move-number">16...</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Ndf6</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(32)" data-move="32">
+                        <span class="move-number">17.</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rfe1</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(33)" data-move="33">
+                        <span class="move-number">17...</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rfe8</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(34)" data-move="34">
+                        <span class="move-number">18.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>a3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(35)" data-move="35">
+                        <span class="move-number">18...</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Nxc3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(36)" data-move="36">
+                        <span class="move-number">19.</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rxc3</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(37)" data-move="37">
+                        <span class="move-number">19...</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Ne4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(38)" data-move="38">
+                        <span class="move-number">20.</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rxc8</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(39)" data-move="39">
+                        <span class="move-number">20...</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rxc8</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(40)" data-move="40">
+                        <span class="move-number">21.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>h4</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(41)" data-move="41">
+                        <span class="move-number">21...</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rc7</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(42)" data-move="42">
+                        <span class="move-number">22.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>h5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(43)" data-move="43">
+                        <span class="move-number">22...</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rc8</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(44)" data-move="44">
+                        <span class="move-number">23.</span>
+                        <span class="move-piece">♘</span>
+                        <strong>Ne5</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(45)" data-move="45">
+                        <span class="move-number">23...</span>
+                        <span class="move-piece">♖</span>
+                        <strong>Rc7</strong>
+                    </div>
+                    <div class="move-item " onclick="goToMove(46)" data-move="46">
+                        <span class="move-number">24.</span>
+                        <span class="move-piece">♙</span>
+                        <strong>f3</strong>
+                    </div>
+                    </div>
+                </div>
+                
+                <div class="evaluation-info">
+                    <div class="evaluation-title">Position Analysis</div>
+                    <div class="position-stats">
+                        <div class="stat-item">
+                            <span>Material:</span>
+                            <span id="materialBalance">Equal</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Castling:</span>
+                            <span id="castlingRights">Both sides</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>En Passant:</span>
+                            <span id="enPassant">None</span>
+                        </div>
+                        <div class="stat-item">
+                            <span>Half Moves:</span>
+                            <span id="halfMoveClock">0</span>
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="keyboard-hints">
+                    <h4>⌨️ Keyboard Shortcuts</h4>
+                    <div class="hint-grid">
+                        <div class="hint-item">
+                            <span>←/→</span>
+                            <span class="key">Navigate</span>
+                        </div>
+                        <div class="hint-item">
+                            <span>Space</span>
+                            <span class="key">Play/Pause</span>
+                        </div>
+                        <div class="hint-item">
+                            <span>Home</span>
+                            <span class="key">First Move</span>
+                        </div>
+                        <div class="hint-item">
+                            <span>End</span>
+                            <span class="key">Last Move</span>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
+        
+        <div class="footer">
+            <p>Generated by Chess Opening Analyzer • Interactive Board Viewer • Study with confidence</p>
+        </div>
+    </div>
+    
+    <script>
+        let currentMoveIndex = 0;
+        let autoplayInterval = null;
+        let isPlaying = false;
+        let showFullNotation = false;
+        
+        const moves = [{'san': 'd4', 'piece': '♙', 'fen': 'rnbqkbnr/pppppppp/8/8/3P4/8/PPP1PPPP/RNBQKBNR b KQkq - 0 1'}, {'san': 'd5', 'piece': '♙', 'fen': 'rnbqkbnr/ppp1pppp/8/3p4/3P4/8/PPP1PPPP/RNBQKBNR w KQkq - 0 2'}, {'san': 'c4', 'piece': '♙', 'fen': 'rnbqkbnr/ppp1pppp/8/3p4/2PP4/8/PP2PPPP/RNBQKBNR b KQkq - 0 2'}, {'san': 'e6', 'piece': '♙', 'fen': 'rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/8/PP2PPPP/RNBQKBNR w KQkq - 0 3'}, {'san': 'Nc3', 'piece': '♘', 'fen': 'rnbqkbnr/ppp2ppp/4p3/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR b KQkq - 1 3'}, {'san': 'Nf6', 'piece': '♘', 'fen': 'rnbqkb1r/ppp2ppp/4pn2/3p4/2PP4/2N5/PP2PPPP/R1BQKBNR w KQkq - 2 4'}, {'san': 'Bg5', 'piece': '♗', 'fen': 'rnbqkb1r/ppp2ppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR b KQkq - 3 4'}, {'san': 'Be7', 'piece': '♗', 'fen': 'rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N5/PP2PPPP/R2QKBNR w KQkq - 4 5'}, {'san': 'e3', 'piece': '♙', 'fen': 'rnbqk2r/ppp1bppp/4pn2/3p2B1/2PP4/2N1P3/PP3PPP/R2QKBNR b KQkq - 0 5'}, {'san': 'O-O', 'piece': '♔', 'fen': 'rnbq1rk1/ppp1bppp/4pn2/3p2B1/2PP4/2N1P3/PP3PPP/R2QKBNR w KQ - 1 6'}, {'san': 'Nf3', 'piece': '♘', 'fen': 'rnbq1rk1/ppp1bppp/4pn2/3p2B1/2PP4/2N1PN2/PP3PPP/R2QKB1R b KQ - 2 6'}, {'san': 'h6', 'piece': '♙', 'fen': 'rnbq1rk1/ppp1bpp1/4pn1p/3p2B1/2PP4/2N1PN2/PP3PPP/R2QKB1R w KQ - 0 7'}, {'san': 'Bh4', 'piece': '♗', 'fen': 'rnbq1rk1/ppp1bpp1/4pn1p/3p4/2PP3B/2N1PN2/PP3PPP/R2QKB1R b KQ - 1 7'}, {'san': 'b6', 'piece': '♙', 'fen': 'rnbq1rk1/p1p1bpp1/1p2pn1p/3p4/2PP3B/2N1PN2/PP3PPP/R2QKB1R w KQ - 0 8'}, {'san': 'cxd5', 'piece': '♙', 'fen': 'rnbq1rk1/p1p1bpp1/1p2pn1p/3P4/3P3B/2N1PN2/PP3PPP/R2QKB1R b KQ - 0 8'}, {'san': 'exd5', 'piece': '♙', 'fen': 'rnbq1rk1/p1p1bpp1/1p3n1p/3p4/3P3B/2N1PN2/PP3PPP/R2QKB1R w KQ - 0 9'}, {'san': 'Bd3', 'piece': '♗', 'fen': 'rnbq1rk1/p1p1bpp1/1p3n1p/3p4/3P3B/2NBPN2/PP3PPP/R2QK2R b KQ - 1 9'}, {'san': 'Bb7', 'piece': '♗', 'fen': 'rn1q1rk1/pbp1bpp1/1p3n1p/3p4/3P3B/2NBPN2/PP3PPP/R2QK2R w KQ - 2 10'}, {'san': 'Rc1', 'piece': '♖', 'fen': 'rn1q1rk1/pbp1bpp1/1p3n1p/3p4/3P3B/2NBPN2/PP3PPP/2RQK2R b K - 3 10'}, {'san': 'Ne4', 'piece': '♘', 'fen': 'rn1q1rk1/pbp1bpp1/1p5p/3p4/3Pn2B/2NBPN2/PP3PPP/2RQK2R w K - 4 11'}, {'san': 'Bxe7', 'piece': '♗', 'fen': 'rn1q1rk1/pbp1Bpp1/1p5p/3p4/3Pn3/2NBPN2/PP3PPP/2RQK2R b K - 0 11'}, {'san': 'Qxe7', 'piece': '♕', 'fen': 'rn3rk1/pbp1qpp1/1p5p/3p4/3Pn3/2NBPN2/PP3PPP/2RQK2R w K - 0 12'}, {'san': 'O-O', 'piece': '♔', 'fen': 'rn3rk1/pbp1qpp1/1p5p/3p4/3Pn3/2NBPN2/PP3PPP/2RQ1RK1 b - - 1 12'}, {'san': 'c5', 'piece': '♙', 'fen': 'rn3rk1/pb2qpp1/1p5p/2pp4/3Pn3/2NBPN2/PP3PPP/2RQ1RK1 w - - 0 13'}, {'san': 'Ne5', 'piece': '♘', 'fen': 'rn3rk1/pb2qpp1/1p5p/2ppN3/3Pn3/2NBP3/PP3PPP/2RQ1RK1 b - - 1 13'}, {'san': 'cxd4', 'piece': '♙', 'fen': 'rn3rk1/pb2qpp1/1p5p/3pN3/3pn3/2NBP3/PP3PPP/2RQ1RK1 w - - 0 14'}, {'san': 'exd4', 'piece': '♙', 'fen': 'rn3rk1/pb2qpp1/1p5p/3pN3/3Pn3/2NB4/PP3PPP/2RQ1RK1 b - - 0 14'}, {'san': 'Nd7', 'piece': '♘', 'fen': 'r4rk1/pb1nqpp1/1p5p/3pN3/3Pn3/2NB4/PP3PPP/2RQ1RK1 w - - 1 15'}, {'san': 'Nf3', 'piece': '♘', 'fen': 'r4rk1/pb1nqpp1/1p5p/3p4/3Pn3/2NB1N2/PP3PPP/2RQ1RK1 b - - 2 15'}, {'san': 'Rac8', 'piece': '♖', 'fen': '2r2rk1/pb1nqpp1/1p5p/3p4/3Pn3/2NB1N2/PP3PPP/2RQ1RK1 w - - 3 16'}, {'san': 'Qb3', 'piece': '♕', 'fen': '2r2rk1/pb1nqpp1/1p5p/3p4/3Pn3/1QNB1N2/PP3PPP/2R2RK1 b - - 4 16'}, {'san': 'Ndf6', 'piece': '♘', 'fen': '2r2rk1/pb2qpp1/1p3n1p/3p4/3Pn3/1QNB1N2/PP3PPP/2R2RK1 w - - 5 17'}, {'san': 'Rfe1', 'piece': '♖', 'fen': '2r2rk1/pb2qpp1/1p3n1p/3p4/3Pn3/1QNB1N2/PP3PPP/2R1R1K1 b - - 6 17'}, {'san': 'Rfe8', 'piece': '♖', 'fen': '2r1r1k1/pb2qpp1/1p3n1p/3p4/3Pn3/1QNB1N2/PP3PPP/2R1R1K1 w - - 7 18'}, {'san': 'a3', 'piece': '♙', 'fen': '2r1r1k1/pb2qpp1/1p3n1p/3p4/3Pn3/PQNB1N2/1P3PPP/2R1R1K1 b - - 0 18'}, {'san': 'Nxc3', 'piece': '♘', 'fen': '2r1r1k1/pb2qpp1/1p3n1p/3p4/3P4/PQnB1N2/1P3PPP/2R1R1K1 w - - 0 19'}, {'san': 'Rxc3', 'piece': '♖', 'fen': '2r1r1k1/pb2qpp1/1p3n1p/3p4/3P4/PQRB1N2/1P3PPP/4R1K1 b - - 0 19'}, {'san': 'Ne4', 'piece': '♘', 'fen': '2r1r1k1/pb2qpp1/1p5p/3p4/3Pn3/PQRB1N2/1P3PPP/4R1K1 w - - 1 20'}, {'san': 'Rxc8', 'piece': '♖', 'fen': '2R1r1k1/pb2qpp1/1p5p/3p4/3Pn3/PQ1B1N2/1P3PPP/4R1K1 b - - 0 20'}, {'san': 'Rxc8', 'piece': '♖', 'fen': '2r3k1/pb2qpp1/1p5p/3p4/3Pn3/PQ1B1N2/1P3PPP/4R1K1 w - - 0 21'}, {'san': 'h4', 'piece': '♙', 'fen': '2r3k1/pb2qpp1/1p5p/3p4/3Pn2P/PQ1B1N2/1P3PP1/4R1K1 b - - 0 21'}, {'san': 'Rc7', 'piece': '♖', 'fen': '6k1/pbr1qpp1/1p5p/3p4/3Pn2P/PQ1B1N2/1P3PP1/4R1K1 w - - 1 22'}, {'san': 'h5', 'piece': '♙', 'fen': '6k1/pbr1qpp1/1p5p/3p3P/3Pn3/PQ1B1N2/1P3PP1/4R1K1 b - - 0 22'}, {'san': 'Rc8', 'piece': '♖', 'fen': '2r3k1/pb2qpp1/1p5p/3p3P/3Pn3/PQ1B1N2/1P3PP1/4R1K1 w - - 1 23'}, {'san': 'Ne5', 'piece': '♘', 'fen': '2r3k1/pb2qpp1/1p5p/3pN2P/3Pn3/PQ1B4/1P3PP1/4R1K1 b - - 2 23'}, {'san': 'Rc7', 'piece': '♖', 'fen': '6k1/pbr1qpp1/1p5p/3pN2P/3Pn3/PQ1B4/1P3PP1/4R1K1 w - - 3 24'}, {'san': 'f3', 'piece': '♙', 'fen': '6k1/pbr1qpp1/1p5p/3pN2P/3Pn3/PQ1B1P2/1P4P1/4R1K1 b - - 0 24'}];
+        const totalMoves = 47;
+        
+        // Piece indicators for each side
+        const pieceIndicators = {
+            'white': '♔',
+            'black': '♛'
+        };
+        
+        function updateBoard() {
+            const moveNumber = String(currentMoveIndex + 1).padStart(2, '0');
+            const currentMove = moves[currentMoveIndex];
+            const isWhiteToMove = currentMoveIndex % 2 === 0;
+            const nextToMove = (currentMoveIndex + 1) % 2 === 0 ? 'white' : 'black';
+            
+            // Update board image
+            document.getElementById('boardImage').src = `${moveNumber}.png`;
+            document.getElementById('currentMove').textContent = currentMoveIndex + 1;
+            document.getElementById('currentMoveText').innerHTML = `
+                <span class="move-piece-indicator">${currentMove.piece}</span>
+                ${currentMove.san}
+            `;
+            document.getElementById('currentPieceIndicator').textContent = currentMove.piece;
+            
+            // Update next to move indicator
+            document.getElementById('moveIndicator').textContent = pieceIndicators[nextToMove];
+            document.getElementById('pieceToMove').innerHTML = `
+                ${pieceIndicators[nextToMove]} ${nextToMove.charAt(0).toUpperCase() + nextToMove.slice(1)} to Move
+            `;
+            
+            // Update active move in the list
+            document.querySelectorAll('.move-item').forEach((item, index) => {
+                item.classList.toggle('active', index === currentMoveIndex);
+            });
+            
+            // Update button states
+            document.getElementById('firstBtn').disabled = currentMoveIndex === 0;
+            document.getElementById('prevBtn').disabled = currentMoveIndex === 0;
+            document.getElementById('nextBtn').disabled = currentMoveIndex === totalMoves - 1;
+            document.getElementById('lastBtn').disabled = currentMoveIndex === totalMoves - 1;
+            
+            // Update position analysis (simplified)
+            updatePositionAnalysis(currentMove.fen);
+        }
+        
+        function updatePositionAnalysis(fen) {
+            const fenParts = fen.split(' ');
+            const activeColor = fenParts[1];
+            const castlingRights = fenParts[2];
+            const enPassant = fenParts[3];
+            const halfMoveClock = fenParts[4];
+            
+            document.getElementById('castlingRights').textContent = castlingRights === '-' ? 'None' : castlingRights;
+            document.getElementById('enPassant').textContent = enPassant === '-' ? 'None' : enPassant;
+            document.getElementById('halfMoveClock').textContent = halfMoveClock;
+        }
+        
+        function goToMove(index) {
+            if (index >= 0 && index < totalMoves) {
+                currentMoveIndex = index;
+                updateBoard();
+            }
+        }
+        
+        function nextMove() {
+            if (currentMoveIndex < totalMoves - 1) {
+                currentMoveIndex++;
+                updateBoard();
+            }
+        }
+        
+        function previousMove() {
+            if (currentMoveIndex > 0) {
+                currentMoveIndex--;
+                updateBoard();
+            }
+        }
+        
+        function toggleAutoplay() {
+            const playBtn = document.getElementById('playBtn');
+            
+            if (isPlaying) {
+                clearInterval(autoplayInterval);
+                playBtn.textContent = '▶ Play';
+                playBtn.classList.remove('playing');
+                isPlaying = false;
+            } else {
+                autoplayInterval = setInterval(() => {
+                    if (currentMoveIndex < totalMoves - 1) {
+                        nextMove();
+                    } else {
+                        toggleAutoplay(); // Stop when reaching the end
+                    }
+                }, 1500);
+                playBtn.textContent = '⏸ Pause';
+                playBtn.classList.add('playing');
+                isPlaying = true;
+            }
+        }
+        
+        function toggleNotation() {
+            const button = document.querySelector('.notation-toggle');
+            showFullNotation = !showFullNotation;
+            button.textContent = showFullNotation ? 'Simple Notation' : 'Full Notation';
+            
+            // This could be extended to show algebraic vs descriptive notation
+            // For now, it's a placeholder for future enhancement
+        }
+        
+        // Keyboard navigation
+        document.addEventListener('keydown', function(e) {
+            switch(e.key) {
+                case 'ArrowLeft':
+                    e.preventDefault();
+                    previousMove();
+                    break;
+                case 'ArrowRight':
+                    e.preventDefault();
+                    nextMove();
+                    break;
+                case ' ':
+                    e.preventDefault();
+                    toggleAutoplay();
+                    break;
+                case 'Home':
+                    e.preventDefault();
+                    goToMove(0);
+                    break;
+                case 'End':
+                    e.preventDefault();
+                    goToMove(totalMoves - 1);
+                    break;
+            }
+        });
+        
+        // Initialize
+        updateBoard();
+    </script>
+</body>
+</html>
