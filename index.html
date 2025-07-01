@@ -3,8 +3,24 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Chess Openings Collection - Enhanced Edition</title>
+    <title>♔ Enhanced Chess Openings Collection ♛</title>
     <style>
+        :root {
+            --chess-primary: #1a1a1a;
+            --chess-secondary: #f0d9b5;
+            --chess-accent: #b58863;
+            --chess-light: #ffffff;
+            --chess-dark: #2c2c2c;
+            --chess-success: #27ae60;
+            --chess-warning: #f39c12;
+            --chess-danger: #e74c3c;
+            --chess-info: #3498db;
+            --border-radius: 12px;
+            --shadow-light: 0 2px 8px rgba(0,0,0,0.1);
+            --shadow-medium: 0 4px 16px rgba(0,0,0,0.15);
+            --shadow-heavy: 0 8px 32px rgba(0,0,0,0.2);
+            --transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+        }
         
         * {
             margin: 0;
@@ -13,79 +29,151 @@
         }
         
         body {
-            font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            font-family: 'SF Pro Display', -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            background: linear-gradient(135deg, var(--chess-primary) 0%, var(--chess-dark) 100%);
+            color: var(--chess-light);
+            line-height: 1.6;
+        }
+        
+        .chess-collection {
             min-height: 100vh;
-            padding: 20px;
         }
         
-        .container {
-            max-width: 1200px;
-            margin: 0 auto;
-            background: rgba(255, 255, 255, 0.95);
-            border-radius: 15px;
-            box-shadow: 0 20px 40px rgba(0, 0, 0, 0.1);
-            overflow: hidden;
-        }
-        
-        .header {
-            background: linear-gradient(135deg, #2c3e50 0%, #34495e 100%);
-            color: white;
-            padding: 40px;
+        .collection-header {
+            background: rgba(255,255,255,0.05);
+            backdrop-filter: blur(20px);
+            padding: 2rem 1rem;
             text-align: center;
+            border-bottom: 1px solid rgba(255,255,255,0.1);
         }
         
-        .header h1 {
-            font-size: 3em;
-            margin-bottom: 15px;
-            text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+        .collection-header h1 {
+            font-size: 2.5rem;
+            font-weight: 800;
+            margin-bottom: 0.5rem;
+            background: linear-gradient(135deg, var(--chess-secondary), var(--chess-accent));
+            -webkit-background-clip: text;
+            -webkit-text-fill-color: transparent;
         }
         
-        .header p {
-            font-size: 1.3em;
+        .collection-header p {
+            font-size: 1.1rem;
             opacity: 0.9;
+            margin-bottom: 2rem;
         }
         
-        .stats-bar {
-            background: rgba(255, 255, 255, 0.1);
-            padding: 15px;
-            margin-top: 20px;
-            border-radius: 10px;
+        .stats-overview {
             display: flex;
             justify-content: center;
-            gap: 30px;
+            gap: 2rem;
             flex-wrap: wrap;
         }
         
-        .stat-item {
+        .stat-card {
+            background: rgba(255,255,255,0.1);
+            padding: 1rem 1.5rem;
+            border-radius: var(--border-radius);
             text-align: center;
+            min-width: 100px;
         }
         
         .stat-number {
-            font-size: 1.8em;
-            font-weight: bold;
             display: block;
+            font-size: 2rem;
+            font-weight: 700;
+            color: var(--chess-secondary);
         }
         
         .stat-label {
-            font-size: 0.9em;
+            font-size: 0.9rem;
             opacity: 0.8;
+        }
+        
+        .collection-tools {
+            padding: 1rem;
+            background: rgba(255,255,255,0.02);
+            display: flex;
+            justify-content: space-between;
+            align-items: center;
+            gap: 1rem;
+            flex-wrap: wrap;
+        }
+        
+        .search-bar {
+            flex: 1;
+            max-width: 400px;
+        }
+        
+        .global-search-input {
+            width: 100%;
+            background: rgba(255,255,255,0.1);
+            border: 1px solid rgba(255,255,255,0.2);
+            color: white;
+            padding: 0.75rem 1rem;
+            border-radius: 25px;
+            font-size: 1rem;
+        }
+        
+        .global-search-input::placeholder {
+            color: rgba(255,255,255,0.6);
+        }
+        
+        .view-options {
+            display: flex;
+            gap: 0.5rem;
+        }
+        
+        .view-btn {
+            background: rgba(255,255,255,0.1);
+            border: none;
+            color: white;
+            padding: 0.6rem 1rem;
+            border-radius: var(--border-radius);
+            cursor: pointer;
+            transition: var(--transition);
+            text-decoration: none;
+            font-weight: 500;
+        }
+        
+        .view-btn:hover,
+        .view-btn.active {
+            background: var(--chess-info);
+        }
+        
+        .view-btn.print {
+            background: var(--chess-warning);
+        }
+        
+        .view-btn.print:hover {
+            background: #e67e22;
+        }
+        
+        .openings-container {
+            padding: 2rem 1rem;
         }
         
         .openings-grid {
             display: grid;
-            grid-template-columns: repeat(auto-fit, minmax(350px, 1fr));
-            gap: 30px;
-            padding: 40px;
+            grid-template-columns: repeat(auto-fit, minmax(300px, 1fr));
+            gap: 1.5rem;
+            max-width: 1200px;
+            margin: 0 auto;
+        }
+        
+        .openings-list {
+            display: flex;
+            flex-direction: column;
+            gap: 1rem;
+            max-width: 800px;
+            margin: 0 auto;
         }
         
         .opening-card {
-            background: white;
-            border-radius: 15px;
-            padding: 25px;
-            box-shadow: 0 10px 25px rgba(0, 0, 0, 0.1);
-            transition: all 0.3s ease;
-            border-left: 5px solid #3498db;
+            background: rgba(255,255,255,0.05);
+            border: 1px solid rgba(255,255,255,0.1);
+            border-radius: var(--border-radius);
+            padding: 1.5rem;
+            transition: var(--transition);
             position: relative;
             overflow: hidden;
         }
@@ -97,523 +185,872 @@
             left: 0;
             right: 0;
             height: 3px;
-            background: linear-gradient(90deg, #3498db, #2ecc71);
+            background: linear-gradient(90deg, var(--chess-secondary), var(--chess-accent));
         }
         
         .opening-card:hover {
-            transform: translateY(-5px);
-            box-shadow: 0 15px 35px rgba(0, 0, 0, 0.15);
+            transform: translateY(-4px);
+            box-shadow: var(--shadow-heavy);
+            background: rgba(255,255,255,0.08);
         }
         
-        .opening-title {
-            font-size: 1.4em;
-            font-weight: bold;
-            color: #2c3e50;
-            margin-bottom: 15px;
-            border-bottom: 2px solid #ecf0f1;
-            padding-bottom: 10px;
-        }
-        
-        .opening-info {
+        .card-header {
             display: flex;
             justify-content: space-between;
             align-items: center;
-            margin-bottom: 15px;
-            font-size: 0.9em;
-            color: #666;
+            margin-bottom: 1rem;
+        }
+        
+        .difficulty-badge {
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
+        }
+        
+        .difficulty-badge.beginner {
+            background: var(--chess-success);
+        }
+        
+        .difficulty-badge.intermediate {
+            background: var(--chess-warning);
+        }
+        
+        .difficulty-badge.advanced {
+            background: var(--chess-danger);
         }
         
         .move-count {
-            background: #e74c3c;
-            color: white;
-            padding: 4px 8px;
-            border-radius: 12px;
-            font-weight: bold;
+            background: rgba(255,255,255,0.1);
+            padding: 0.3rem 0.8rem;
+            border-radius: 15px;
+            font-size: 0.8rem;
+            font-weight: 600;
         }
         
-        .perspective-links {
+        .opening-name {
+            font-size: 1.2rem;
+            font-weight: 600;
+            margin-bottom: 1rem;
+            line-height: 1.3;
+        }
+        
+        .opening-meta {
             display: flex;
-            gap: 15px;
-            margin-top: 15px;
+            gap: 1rem;
+            margin-bottom: 1.5rem;
         }
         
-        .perspective-link {
+        .meta-item {
+            display: flex;
+            align-items: center;
+            gap: 0.5rem;
+            font-size: 0.9rem;
+            opacity: 0.8;
+        }
+        
+        .meta-icon {
+            font-size: 1.1rem;
+        }
+        
+        .card-actions {
+            display: flex;
+            gap: 0.75rem;
+        }
+        
+        .action-link {
             flex: 1;
-            background: #3498db;
+            background: var(--chess-info);
             color: white;
             text-decoration: none;
-            padding: 12px 20px;
-            border-radius: 8px;
+            padding: 0.75rem;
+            border-radius: var(--border-radius);
             text-align: center;
-            transition: all 0.3s ease;
             font-weight: 500;
+            transition: var(--transition);
             display: flex;
             align-items: center;
             justify-content: center;
-            gap: 8px;
+            gap: 0.5rem;
         }
         
-        .perspective-link:hover {
+        .action-link:hover {
             background: #2980b9;
-            transform: translateY(-2px);
+            transform: translateY(-1px);
         }
         
-        .perspective-link.white {
-            background: #e74c3c;
+        .action-link.black {
+            background: var(--chess-dark);
+            border: 1px solid rgba(255,255,255,0.2);
         }
         
-        .perspective-link.white:hover {
-            background: #c0392b;
+        .action-link.black:hover {
+            background: #1a1a1a;
         }
         
-        .footer {
-            background: #34495e;
-            color: white;
-            padding: 25px;
+        .collection-footer {
+            background: rgba(255,255,255,0.05);
+            padding: 2rem;
             text-align: center;
+            border-top: 1px solid rgba(255,255,255,0.1);
+            margin-top: 2rem;
         }
         
-        .quick-actions {
-            background: #f8f9fa;
-            padding: 20px;
-            border-bottom: 1px solid #e9ecef;
-            text-align: center;
+        /* List view styles */
+        .openings-list .opening-card {
+            display: flex;
+            align-items: center;
+            gap: 2rem;
+            padding: 1rem 1.5rem;
         }
         
-        .action-btn {
-            background: #95a5a6;
-            color: white;
-            text-decoration: none;
-            padding: 10px 20px;
-            border-radius: 20px;
-            margin: 0 10px;
-            font-weight: 500;
-            transition: all 0.3s ease;
+        .openings-list .card-header {
+            margin-bottom: 0;
+            flex-direction: column;
+            gap: 0.5rem;
         }
         
-        .action-btn:hover {
-            background: #7f8c8d;
-            transform: translateY(-2px);
+        .openings-list .opening-name {
+            margin-bottom: 0;
+            flex: 1;
         }
         
-        .action-btn.print {
-            background: #f39c12;
+        .openings-list .opening-meta {
+            margin-bottom: 0;
         }
         
-        .action-btn.print:hover {
-            background: #e67e22;
+        .openings-list .card-actions {
+            flex-shrink: 0;
+            min-width: 200px;
         }
         
+        /* Responsive design */
         @media (max-width: 768px) {
+            .collection-header h1 {
+                font-size: 2rem;
+            }
+            
+            .collection-tools {
+                flex-direction: column;
+                align-items: stretch;
+            }
+            
+            .search-bar {
+                max-width: none;
+            }
+            
+            .view-options {
+                justify-content: center;
+            }
+            
             .openings-grid {
                 grid-template-columns: 1fr;
-                padding: 20px;
+                padding: 0;
             }
             
-            .header h1 {
-                font-size: 2.5em;
+            .stats-overview {
+                gap: 1rem;
             }
             
-            .stats-bar {
+            .openings-list .opening-card {
                 flex-direction: column;
-                gap: 15px;
+                text-align: center;
+                gap: 1rem;
+            }
+            
+            .openings-list .card-actions {
+                min-width: auto;
+                width: 100%;
             }
         }
-    
+        
+        @media print {
+            .collection-tools,
+            .view-options {
+                display: none !important;
+            }
+        }
     </style>
 </head>
 <body>
-    <div class="container">
-        <div class="header">
-            <h1>♔ Chess Openings Collection ♛</h1>
-            <p>Interactive Analysis of Classical Chess Openings with Enhanced Features</p>
-            <div class="stats-bar">
-                <div class="stat-item">
-                    <span class="stat-number">23</span>
-                    <span class="stat-label">Openings</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">1707</span>
-                    <span class="stat-label">Total Moves</span>
-                </div>
-                <div class="stat-item">
-                    <span class="stat-number">46</span>
-                    <span class="stat-label">Perspectives</span>
+    <div class="chess-collection">
+        <header class="collection-header">
+            <div class="header-content">
+                <h1>♔ Chess Openings Mastery ♛</h1>
+                <p>Interactive Study Collection with Advanced Search & Analysis</p>
+                <div class="stats-overview">
+                    <div class="stat-card">
+                        <span class="stat-number">23</span>
+                        <span class="stat-label">Openings</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">1707</span>
+                        <span class="stat-label">Total Moves</span>
+                    </div>
+                    <div class="stat-card">
+                        <span class="stat-number">46</span>
+                        <span class="stat-label">Perspectives</span>
+                    </div>
                 </div>
             </div>
-        </div>
-        
-        <div class="quick-actions">
-            <a href="print_ready_openings.html" class="action-btn print">🖨️ Print-Ready Reference</a>
-            <a href="#" class="action-btn" onclick="showRandomOpening()">🎲 Random Opening</a>
-        </div>
-        
-        <div class="openings-grid">
+        </header>
 
-            <div class="opening-card">
-                <div class="opening-title">Ruy Lopez - Closed, Breyer Defense, Zaitsev Hybrid</div>
-                <div class="opening-info">
-                    <span>♔ 20 | ♛ 20 moves</span>
-                    <span class="move-count">40 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="ruy_lopez_breyer/white/ruy_lopez_breyer.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="ruy_lopez_breyer/black/ruy_lopez_breyer.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
+        <div class="collection-tools">
+            <div class="search-bar">
+                <input type="text" id="globalSearch" placeholder="🔍 Search openings..." class="global-search-input">
             </div>
-            <div class="opening-card">
-                <div class="opening-title">Italian Game - Giuoco Piano, Scotch Gambit, Walbrodt-Baird Gambit</div>
-                <div class="opening-info">
-                    <span>♔ 20 | ♛ 20 moves</span>
-                    <span class="move-count">40 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="italian_giuoco_piano_scotch/white/italian_giuoco_piano_scotch.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="italian_giuoco_piano_scotch/black/italian_giuoco_piano_scotch.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Sicilian Defense: Najdorf Variation, Main Line</div>
-                <div class="opening-info">
-                    <span>♔ 22 | ♛ 22 moves</span>
-                    <span class="move-count">44 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="sicilian_defense_najdorf/white/sicilian_defense_najdorf.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="sicilian_defense_najdorf/black/sicilian_defense_najdorf.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Queen's Gambit Declined: Tartakower Defense, Exchange Variation</div>
-                <div class="opening-info">
-                    <span>♔ 24 | ♛ 23 moves</span>
-                    <span class="move-count">47 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="qgd_tartakower_defense/white/qgd_tartakower_defense.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="qgd_tartakower_defense/black/qgd_tartakower_defense.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">French Defence - Tarrasch, Closed Variation</div>
-                <div class="opening-info">
-                    <span>♔ 24 | ♛ 24 moves</span>
-                    <span class="move-count">48 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="french_defense_tarrasch/white/french_defense_tarrasch.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="french_defense_tarrasch/black/french_defense_tarrasch.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">King's Indian Defense: Orthodox Variation, Classical System</div>
-                <div class="opening-info">
-                    <span>♔ 24 | ♛ 24 moves</span>
-                    <span class="move-count">48 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="kings_indian_orthodox_classical/white/kings_indian_orthodox_classical.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="kings_indian_orthodox_classical/black/kings_indian_orthodox_classical.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">English Opening: King's English Variation, Two Knights Variation, Reversed Dragon</div>
-                <div class="opening-info">
-                    <span>♔ 23 | ♛ 23 moves</span>
-                    <span class="move-count">46 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="english_reversed_dragon/white/english_reversed_dragon.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="english_reversed_dragon/black/english_reversed_dragon.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Caro-Kann Defense: Karpov Variation</div>
-                <div class="opening-info">
-                    <span>♔ 23 | ♛ 23 moves</span>
-                    <span class="move-count">46 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="caro_kann_karpov/white/caro_kann_karpov.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="caro_kann_karpov/black/caro_kann_karpov.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Scotch Game: Schmidt Variation</div>
-                <div class="opening-info">
-                    <span>♔ 25 | ♛ 25 moves</span>
-                    <span class="move-count">50 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="scotch_game_schmidt/white/scotch_game_schmidt.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="scotch_game_schmidt/black/scotch_game_schmidt.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Nimzo-Indian Defense: Classical Variation</div>
-                <div class="opening-info">
-                    <span>♔ 25 | ♛ 25 moves</span>
-                    <span class="move-count">50 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="nid_classical/white/nid_classical.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="nid_classical/black/nid_classical.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Grünfeld Defense: Exchange Variation, Modern Exchange Variation, Kramnik's Line</div>
-                <div class="opening-info">
-                    <span>♔ 49 | ♛ 48 moves</span>
-                    <span class="move-count">97 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="grunfeld_exchange/white/grunfeld_exchange.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="grunfeld_exchange/black/grunfeld_exchange.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">King's Indian Attack</div>
-                <div class="opening-info">
-                    <span>♔ 49 | ♛ 48 moves</span>
-                    <span class="move-count">97 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="kia/white/kia.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="kia/black/kia.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Catalan Opening: Closed</div>
-                <div class="opening-info">
-                    <span>♔ 58 | ♛ 57 moves</span>
-                    <span class="move-count">115 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="catalan_closed/white/catalan_closed.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="catalan_closed/black/catalan_closed.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Scandinavian Defense: Richter Variation</div>
-                <div class="opening-info">
-                    <span>♔ 35 | ♛ 35 moves</span>
-                    <span class="move-count">70 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="scandinavian_defense_richter/white/scandinavian_defense_richter.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="scandinavian_defense_richter/black/scandinavian_defense_richter.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Dutch Defense: Normal Variation</div>
-                <div class="opening-info">
-                    <span>♔ 63 | ♛ 62 moves</span>
-                    <span class="move-count">125 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="dutch_defense_normal/white/dutch_defense_normal.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="dutch_defense_normal/black/dutch_defense_normal.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Vienna Game: Vienna Gambit, Main Line</div>
-                <div class="opening-info">
-                    <span>♔ 90 | ♛ 89 moves</span>
-                    <span class="move-count">179 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="vienna_gambit_main/white/vienna_gambit_main.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="vienna_gambit_main/black/vienna_gambit_main.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">King's Indian Defense: Orthodox Variation, Classical System, Traditional Line, Aronin-Taimanov Defense</div>
-                <div class="opening-info">
-                    <span>♔ 64 | ♛ 63 moves</span>
-                    <span class="move-count">127 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="kid_aronin/white/kid_aronin.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="kid_aronin/black/kid_aronin.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Benko Gambit: Zaitsev Variation, Nescafe Frappe Attack</div>
-                <div class="opening-info">
-                    <span>♔ 45 | ♛ 45 moves</span>
-                    <span class="move-count">90 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="benko_gambit_nescafe/white/benko_gambit_nescafe.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="benko_gambit_nescafe/black/benko_gambit_nescafe.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Caro-Kann Defense: Advance Variation, Tal Variation</div>
-                <div class="opening-info">
-                    <span>♔ 60 | ♛ 59 moves</span>
-                    <span class="move-count">119 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="caro_kann_tal/white/caro_kann_tal.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="caro_kann_tal/black/caro_kann_tal.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">English Opening: Carls-Bremen System</div>
-                <div class="opening-info">
-                    <span>♔ 55 | ♛ 55 moves</span>
-                    <span class="move-count">110 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="english_carlsbremen/white/english_carlsbremen.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="english_carlsbremen/black/english_carlsbremen.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Ruy Lopez: Berlin Defense, l'Hermet Variation, Berlin Wall Defense</div>
-                <div class="opening-info">
-                    <span>♔ 8 | ♛ 8 moves</span>
-                    <span class="move-count">16 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="ruylopez_berlin_hermet/white/ruylopez_berlin_hermet.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="ruylopez_berlin_hermet/black/ruylopez_berlin_hermet.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Ruy Lopez: Berlin Defense</div>
-                <div class="opening-info">
-                    <span>♔ 20 | ♛ 19 moves</span>
-                    <span class="move-count">39 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="ruylopez_berlin/white/ruylopez_berlin.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="ruylopez_berlin/black/ruylopez_berlin.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
-            </div>
-            <div class="opening-card">
-                <div class="opening-title">Alekhine Defense: Modern Variation, Keres Variation</div>
-                <div class="opening-info">
-                    <span>♔ 32 | ♛ 32 moves</span>
-                    <span class="move-count">64 total</span>
-                </div>
-                <div class="perspective-links">
-                    <a href="alekhine_defense_keres/white/alekhine_defense_keres.html" class="perspective-link">
-                        ♔ White Perspective
-                    </a>
-                    <a href="alekhine_defense_keres/black/alekhine_defense_keres.html" class="perspective-link white">
-                        ♛ Black Perspective
-                    </a>
-                </div>
+            <div class="view-options">
+                <button class="view-btn active" data-view="grid">📊 Grid</button>
+                <button class="view-btn" data-view="list">📋 List</button>
+                <a href="print_all_moves.html" class="view-btn print">🖨️ Print All Moves</a>
             </div>
         </div>
-        
-        <div class="footer">
-            <p>Generated by Enhanced Chess Opening Analyzer • Feature-Rich Interactive Study Tool</p>
-        </div>
+
+        <main class="openings-container" id="openingsContainer">
+            <div class="openings-grid" id="openingsGrid">
+                <div class="opening-card" data-opening="ruy lopez - closed, breyer defense, zaitsev hybrid" data-moves="40">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">40 moves</div>
+                    </div>
+                    <h3 class="opening-name">Ruy Lopez - Closed, Breyer Defense, Zaitsev Hybrid</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>20 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>20 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="ruy_lopez_breyer/white/ruy_lopez_breyer.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="ruy_lopez_breyer/black/ruy_lopez_breyer.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="italian game - giuoco piano, scotch gambit, walbrodt-baird gambit" data-moves="40">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">40 moves</div>
+                    </div>
+                    <h3 class="opening-name">Italian Game - Giuoco Piano, Scotch Gambit, Walbrodt-Baird Gambit</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>20 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>20 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="italian_giuoco_piano_scotch/white/italian_giuoco_piano_scotch.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="italian_giuoco_piano_scotch/black/italian_giuoco_piano_scotch.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="sicilian defense: najdorf variation, main line" data-moves="44">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">44 moves</div>
+                    </div>
+                    <h3 class="opening-name">Sicilian Defense: Najdorf Variation, Main Line</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>22 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>22 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="sicilian_defense_najdorf/white/sicilian_defense_najdorf.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="sicilian_defense_najdorf/black/sicilian_defense_najdorf.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="queen's gambit declined: tartakower defense, exchange variation" data-moves="47">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">47 moves</div>
+                    </div>
+                    <h3 class="opening-name">Queen's Gambit Declined: Tartakower Defense, Exchange Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>24 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>23 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="qgd_tartakower_defense/white/qgd_tartakower_defense.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="qgd_tartakower_defense/black/qgd_tartakower_defense.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="french defence - tarrasch, closed variation" data-moves="48">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">48 moves</div>
+                    </div>
+                    <h3 class="opening-name">French Defence - Tarrasch, Closed Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>24 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>24 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="french_defense_tarrasch/white/french_defense_tarrasch.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="french_defense_tarrasch/black/french_defense_tarrasch.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="king's indian defense: orthodox variation, classical system" data-moves="48">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">48 moves</div>
+                    </div>
+                    <h3 class="opening-name">King's Indian Defense: Orthodox Variation, Classical System</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>24 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>24 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="kings_indian_orthodox_classical/white/kings_indian_orthodox_classical.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="kings_indian_orthodox_classical/black/kings_indian_orthodox_classical.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="english opening: king's english variation, two knights variation, reversed dragon" data-moves="46">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">46 moves</div>
+                    </div>
+                    <h3 class="opening-name">English Opening: King's English Variation, Two Knights Variation, Reversed Dragon</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>23 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>23 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="english_reversed_dragon/white/english_reversed_dragon.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="english_reversed_dragon/black/english_reversed_dragon.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="caro-kann defense: karpov variation" data-moves="46">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">46 moves</div>
+                    </div>
+                    <h3 class="opening-name">Caro-Kann Defense: Karpov Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>23 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>23 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="caro_kann_karpov/white/caro_kann_karpov.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="caro_kann_karpov/black/caro_kann_karpov.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="scotch game: schmidt variation" data-moves="50">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">50 moves</div>
+                    </div>
+                    <h3 class="opening-name">Scotch Game: Schmidt Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>25 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>25 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="scotch_game_schmidt/white/scotch_game_schmidt.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="scotch_game_schmidt/black/scotch_game_schmidt.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="nimzo-indian defense: classical variation" data-moves="50">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">50 moves</div>
+                    </div>
+                    <h3 class="opening-name">Nimzo-Indian Defense: Classical Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>25 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>25 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="nid_classical/white/nid_classical.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="nid_classical/black/nid_classical.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="grünfeld defense: exchange variation, modern exchange variation, kramnik's line" data-moves="97">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">97 moves</div>
+                    </div>
+                    <h3 class="opening-name">Grünfeld Defense: Exchange Variation, Modern Exchange Variation, Kramnik's Line</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>49 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>48 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="grunfeld_exchange/white/grunfeld_exchange.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="grunfeld_exchange/black/grunfeld_exchange.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="king's indian attack" data-moves="97">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">97 moves</div>
+                    </div>
+                    <h3 class="opening-name">King's Indian Attack</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>49 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>48 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="kia/white/kia.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="kia/black/kia.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="catalan opening: closed" data-moves="115">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">115 moves</div>
+                    </div>
+                    <h3 class="opening-name">Catalan Opening: Closed</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>58 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>57 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="catalan_closed/white/catalan_closed.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="catalan_closed/black/catalan_closed.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="scandinavian defense: richter variation" data-moves="70">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">70 moves</div>
+                    </div>
+                    <h3 class="opening-name">Scandinavian Defense: Richter Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>35 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>35 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="scandinavian_defense_richter/white/scandinavian_defense_richter.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="scandinavian_defense_richter/black/scandinavian_defense_richter.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="dutch defense: normal variation" data-moves="125">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">125 moves</div>
+                    </div>
+                    <h3 class="opening-name">Dutch Defense: Normal Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>63 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>62 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="dutch_defense_normal/white/dutch_defense_normal.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="dutch_defense_normal/black/dutch_defense_normal.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="vienna game: vienna gambit, main line" data-moves="179">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">179 moves</div>
+                    </div>
+                    <h3 class="opening-name">Vienna Game: Vienna Gambit, Main Line</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>90 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>89 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="vienna_gambit_main/white/vienna_gambit_main.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="vienna_gambit_main/black/vienna_gambit_main.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="king's indian defense: orthodox variation, classical system, traditional line, aronin-taimanov defense" data-moves="127">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">127 moves</div>
+                    </div>
+                    <h3 class="opening-name">King's Indian Defense: Orthodox Variation, Classical System, Traditional Line, Aronin-Taimanov Defense</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>64 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>63 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="kid_aronin/white/kid_aronin.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="kid_aronin/black/kid_aronin.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="benko gambit: zaitsev variation, nescafe frappe attack" data-moves="90">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">90 moves</div>
+                    </div>
+                    <h3 class="opening-name">Benko Gambit: Zaitsev Variation, Nescafe Frappe Attack</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>45 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>45 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="benko_gambit_nescafe/white/benko_gambit_nescafe.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="benko_gambit_nescafe/black/benko_gambit_nescafe.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="caro-kann defense: advance variation, tal variation" data-moves="119">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">119 moves</div>
+                    </div>
+                    <h3 class="opening-name">Caro-Kann Defense: Advance Variation, Tal Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>60 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>59 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="caro_kann_tal/white/caro_kann_tal.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="caro_kann_tal/black/caro_kann_tal.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="english opening: carls-bremen system" data-moves="110">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">110 moves</div>
+                    </div>
+                    <h3 class="opening-name">English Opening: Carls-Bremen System</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>55 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>55 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="english_carlsbremen/white/english_carlsbremen.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="english_carlsbremen/black/english_carlsbremen.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="ruy lopez: berlin defense, l'hermet variation, berlin wall defense" data-moves="16">
+                    <div class="card-header">
+                        <div class="difficulty-badge beginner">Beginner</div>
+                        <div class="move-count">16 moves</div>
+                    </div>
+                    <h3 class="opening-name">Ruy Lopez: Berlin Defense, l'Hermet Variation, Berlin Wall Defense</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>8 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>8 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="ruylopez_berlin_hermet/white/ruylopez_berlin_hermet.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="ruylopez_berlin_hermet/black/ruylopez_berlin_hermet.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="ruy lopez: berlin defense" data-moves="39">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">39 moves</div>
+                    </div>
+                    <h3 class="opening-name">Ruy Lopez: Berlin Defense</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>20 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>19 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="ruylopez_berlin/white/ruylopez_berlin.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="ruylopez_berlin/black/ruylopez_berlin.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+                <div class="opening-card" data-opening="alekhine defense: modern variation, keres variation" data-moves="64">
+                    <div class="card-header">
+                        <div class="difficulty-badge advanced">Advanced</div>
+                        <div class="move-count">64 moves</div>
+                    </div>
+                    <h3 class="opening-name">Alekhine Defense: Modern Variation, Keres Variation</h3>
+                    <div class="opening-meta">
+                        <div class="meta-item">
+                            <span class="meta-icon">♔</span>
+                            <span>32 moves</span>
+                        </div>
+                        <div class="meta-item">
+                            <span class="meta-icon">♛</span>
+                            <span>32 moves</span>
+                        </div>
+                    </div>
+                    <div class="card-actions">
+                        <a href="alekhine_defense_keres/white/alekhine_defense_keres.html" class="action-link white">
+                            ♔ White View
+                        </a>
+                        <a href="alekhine_defense_keres/black/alekhine_defense_keres.html" class="action-link black">
+                            ♛ Black View
+                        </a>
+                    </div>
+                </div>
+            </div>
+        </main>
+
+        <footer class="collection-footer">
+            <p>Enhanced Chess Opening Generator • Mobile-Optimized • Advanced Search Features • Complete Print Reference</p>
+        </footer>
     </div>
-    
+
     <script>
-        function showRandomOpening() {
-            const cards = document.querySelectorAll('.opening-card');
-            const randomCard = cards[Math.floor(Math.random() * cards.length)];
-            randomCard.scrollIntoView({ behavior: 'smooth', block: 'center' });
-            randomCard.style.transform = 'scale(1.05)';
-            randomCard.style.boxShadow = '0 20px 40px rgba(52, 152, 219, 0.3)';
-            setTimeout(() => {
-                randomCard.style.transform = '';
-                randomCard.style.boxShadow = '';
-            }, 2000);
+        // Enhanced index functionality
+        function initializeIndex() {
+            setupSearch();
+            setupViewToggle();
+            setupFilters();
         }
+        
+        function setupSearch() {
+            const searchInput = document.getElementById('globalSearch');
+            searchInput.addEventListener('input', debounce(performGlobalSearch, 300));
+        }
+        
+        function performGlobalSearch() {
+            const query = document.getElementById('globalSearch').value.toLowerCase();
+            const cards = document.querySelectorAll('.opening-card');
+            
+            cards.forEach(card => {
+                const openingName = card.dataset.opening;
+                const moveCount = card.dataset.moves;
+                const matches = openingName.includes(query) || moveCount.includes(query);
+                
+                card.style.display = matches ? 'block' : 'none';
+            });
+        }
+        
+        function setupViewToggle() {
+            document.querySelectorAll('.view-btn').forEach(btn => {
+                btn.addEventListener('click', (e) => {
+                    if (e.target.classList.contains('print')) return;
+                    
+                    e.preventDefault();
+                    const view = e.target.dataset.view;
+                    
+                    document.querySelectorAll('.view-btn').forEach(b => b.classList.remove('active'));
+                    e.target.classList.add('active');
+                    
+                    const grid = document.getElementById('openingsGrid');
+                    grid.className = view === 'list' ? 'openings-list' : 'openings-grid';
+                });
+            });
+        }
+        
+        function setupFilters() {
+            // Add filter functionality here
+        }
+        
+        function debounce(func, wait) {
+            let timeout;
+            return function executedFunction(...args) {
+                const later = () => {
+                    clearTimeout(timeout);
+                    func(...args);
+                };
+                clearTimeout(timeout);
+                timeout = setTimeout(later, wait);
+            };
+        }
+        
+        document.addEventListener('DOMContentLoaded', initializeIndex);
     </script>
 </body>
 </html>
