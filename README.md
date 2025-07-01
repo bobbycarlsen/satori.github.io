@@ -8,10 +8,10 @@
 
 ## 🎯 **Start Here**
 
-### 🏠 **[📊 Browse All Openings](https://bobbycarlsen.github.io/satori/index.html)**
+### 🏠 **[📊 Browse All Openings](https://bobbycarlsen.github.io/satori.github.io/index.html)**
 *Main interactive collection with all chess openings*
 
-### 🖨️ **[📄 Print Study Guide](https://bobbycarlsen.github.io/satori/print_ready_openings.html)**
+### 🖨️ **[📄 Print Study Guide](https://bobbycarlsen.github.io/satori.github.io/print_ready_openings.html)**
 *Professional print-ready reference with side-by-side analysis*
 
 ---
@@ -40,7 +40,7 @@
 
 ## 🎯 **How to Use**
 
-1. **[Click here to start](https://bobbycarlsen.github.io/satori/index.html)** 
+1. **[Click here to start](https://bobbycarlsen.github.io/satori.github.io/index.html)** 
 2. **Choose an opening** from the collection
 3. **Pick your perspective** - ♔ White or ♛ Black view
 4. **Navigate through moves** using buttons or keyboard
