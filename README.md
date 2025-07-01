@@ -2,7 +2,7 @@
 
 > **Visual move-by-move analysis of classical chess openings from both White and Black perspectives**
 
-[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Site-brightgreen?style=for-the-badge)](https://bobbycarlsen.github.io/satori/)
+[![Live Demo](https://img.shields.io/badge/🚀%20Live%20Demo-Visit%20Site-brightgreen?style=for-the-badge)](https://bobbycarlsen.github.io/satori.github.io/)
 
 ---
 
